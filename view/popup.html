@@ -8,17 +8,20 @@
 
 <body>
   <div id="app">
+    <button @click="reload">Reload</button>
+    <button @click="check">Check</button>
+    <hr>
     <table>
       <thead>
         <th>確認</th>
         <th>名前/URL</th>
       </thead>
       <tbody>
-        <tr v-for="b in bookmarks">
-          <td></td>
+        <tr v-for="b in bookmarks" :key="b.url">
+          <td>{{ b.status === true ? 'v' : (b.status === false ? 'x' : '?' ) }}</td>
           <td>
             <div>{{ fullPath(b) }}</div>
-            <div><a href="{{ b.url }}">{{ b.url }}</a></div>
+            <div><a :href="b.url"><span>{{ b.url }}</span></a></div>
 
           </td>
         </tr>
@@ -35,12 +38,6 @@
   body {
     width: 800px;
     height: 800px;
-  }
-
-  * {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 </style>
 

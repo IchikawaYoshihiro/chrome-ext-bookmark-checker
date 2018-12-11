@@ -10,6 +10,8 @@
   "icons": {},
   "background": {},
   "permissions": [
-    "bookmarks"
+    "bookmarks",
+    "http://*/*",
+    "https://*/*"
   ]
 }
