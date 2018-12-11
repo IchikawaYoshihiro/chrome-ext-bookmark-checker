@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>設定</title>
+</head>
+
+<body>
+  <div id="app">
+    <table>
+      <thead>
+        <th>確認</th>
+        <th>名前/URL</th>
+      </thead>
+      <tbody>
+        <tr v-for="b in bookmarks">
+          <td></td>
+          <td>
+            <div>{{ fullPath(b) }}</div>
+            <div><a href="{{ b.url }}">{{ b.url }}</a></div>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="../js/vue.js"></script>
+  <script src="../js/chrome-extension-async.js"></script>
+  <script src="../js/popup.js"></script>
+
+</body>
+<style>
+  body {
+    width: 800px;
+    height: 800px;
+  }
+
+  * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
+</html>
