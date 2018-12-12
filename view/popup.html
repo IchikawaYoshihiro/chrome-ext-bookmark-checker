@@ -11,23 +11,25 @@
     <button @click="reload">Reload</button>
     <button @click="check">Check</button>
     <hr>
-    <table>
-      <thead>
-        <th>確認</th>
-        <th>名前/URL</th>
-      </thead>
-      <tbody>
-        <tr v-for="b in bookmarks" :key="b.url">
-          <td>{{ b.status === true ? 'v' : (b.status === false ? 'x' : '?' ) }}</td>
-          <td>
-            <div>{{ fullPath(b) }}</div>
-            <div><a :href="b.url"><span>{{ b.url }}</span></a></div>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <ul>
+      <bookmark-component 
+        v-for="(index, b) in bookmarks" 
+        :key="index"
+        :bookmark="b"
+      >
+        <button @click="del(index)">x</button>
+      </bookmark-component>
+    </ul>
   </div>
+
+<script type="text/x-template" id="bookmark-component">
+  <li>
+    <span class="item item-action"><slot></slot></span>
+    <span class="item item-status" :class="statusClass">{{ statusText }}</span>
+    <span class="item item-path">{{ fullPath }}</span>
+    <span class="item item-link"><a :href="bookmark.url" target="_blank">{{ bookmark.url }}</a></span>
+  </li>
+</script>
 
   <script src="../js/vue.js"></script>
   <script src="../js/chrome-extension-async.js"></script>
@@ -35,9 +37,53 @@
 
 </body>
 <style>
-  body {
-    width: 800px;
-    height: 800px;
+
+  ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+  li {
+    margin: .1rem;
+    border-bottom: solid 1px #ddd;
+  }
+  a {
+    display:inline;
+    max-width: 40rem;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+  }
+  .item {
+    margin: .1rem;
+    display:inline;
+  }
+  .item-action {
+    width: 4rem;
+  }
+  .item-status {
+    width: 4rem;
+  }
+  .item-path {
+    width: 40rem;
+  }
+  .item-link {
+    width: 40rem;
+  }
+
+  .item-status {
+    padding: .1rem .5rem;
+  }
+  .status-ok {
+    color:white;
+    background-color: green;
+  }
+  .status-ng {
+    color:white;
+    background-color: red;
+  }
+  .status-none {
+    background-color: yellow;
   }
 </style>
 
