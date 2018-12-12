@@ -11,19 +11,18 @@
     <button @click="reload">Reload</button>
     <button @click="check">Check</button>
     <hr>
-    <ul>
-      <bookmark-component 
-        v-for="(index, b) in bookmarks" 
-        :key="index"
-        :bookmark="b"
-      >
+    <ul v-if="isReady">
+      <bookmark-component v-for="(index, b) in bookmarks" :key="index" :bookmark="b">
         <button @click="del(index)">x</button>
       </bookmark-component>
     </ul>
+    <div v-else>
+      Loading...
+    </div>
   </div>
 
-<script type="text/x-template" id="bookmark-component">
-  <li>
+  <script type="text/x-template" id="bookmark-component">
+    <li>
     <span class="item item-action"><slot></slot></span>
     <span class="item item-status" :class="statusClass">{{ statusText }}</span>
     <span class="item item-path">{{ fullPath }}</span>
@@ -37,36 +36,42 @@
 
 </body>
 <style>
-
   ul {
     list-style: none;
     padding: 0px;
     margin: 0px;
   }
+
   li {
     margin: .1rem;
     border-bottom: solid 1px #ddd;
   }
+
   a {
-    display:inline;
+    display: inline;
     max-width: 40rem;
     overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
+
   .item {
     margin: .1rem;
-    display:inline;
+    display: inline;
   }
+
   .item-action {
     width: 4rem;
   }
+
   .item-status {
     width: 4rem;
   }
+
   .item-path {
     width: 40rem;
   }
+
   .item-link {
     width: 40rem;
   }
@@ -74,14 +79,17 @@
   .item-status {
     padding: .1rem .5rem;
   }
+
   .status-ok {
-    color:white;
+    color: white;
     background-color: green;
   }
+
   .status-ng {
-    color:white;
+    color: white;
     background-color: red;
   }
+
   .status-none {
     background-color: yellow;
   }

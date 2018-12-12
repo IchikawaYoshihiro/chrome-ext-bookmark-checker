@@ -7,7 +7,6 @@
     "default_title": "一覧",
     "default_popup": "view/popup.html"
   },
-  "icons": {},
   "background": {},
   "permissions": [
     "bookmarks",

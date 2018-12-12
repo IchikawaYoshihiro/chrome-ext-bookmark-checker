@@ -5,15 +5,23 @@ Vue.component('bookmark-component', {
   },
   computed: {
     /**
-     * build the bookmark title with parents folder title.
+     * フォルダ名を結合したブックマーク名を返す
      * @return {String}
      */
     fullPath() {
       return `${this.bookmark.folder}${this.bookmark.title || 'no title'}`;
     },
+    /**
+     * ステータス表示テキストを返す
+     * @return {String}
+     */
     statusText() {
       return `${this.bookmark.status || '-'}`;
     },
+    /**
+     * ステータス表示用のスタイルクラス名を返す
+     * @return {Object}
+     */
     statusClass() {
       return {
         'status-ok': this.bookmark.ok === true,
@@ -31,17 +39,17 @@ const app = new Vue({
   },
   methods: {
     /**
-     * fetch bookmark tree data.
+     * ブックマークツリーを取得する
      * @return {Promise}
      */
     fetchBookmarks() {
       return chrome.bookmarks.getTree();
     },
     /**
-     * flatten bookmark tree.
+     * ブックマークツリーを一次元配列にならす
      * @param {Object} bookmark bookmark tree
      * @param {String} folder parent folder name
-     * @return {Array} bookmarks
+     * @return {Array} bookmark array
      */
     flatten(bookmark, folder = '') {
       if (bookmark && bookmark.children) {
@@ -58,27 +66,28 @@ const app = new Vue({
 
       return [bookmark];
     },
+    /**
+     * ブックマークツリーを取得してならす
+     */
     async reload() {
       this.bookmarks = [];
       const bookmarks = await this.fetchBookmarks();
 
-
       const f = this.flatten(bookmarks[0]);
-
-      console.log(f);
 
       this.bookmarks = f;
     },
+    /**
+     * HTTPリクエストを投げてレスポンスを評価する
+     */
     check() {
       this.bookmarks.map(async b => {
         let res;
         try {
-          console.log(b.url);
           res = await fetch(b.url);
         } catch (e) {
           console.warn(e);
-        }
-        finally {
+        } finally {
           if (res) {
             b.status = res.status || 0;
             b.ok = res.ok || false;
@@ -88,7 +97,7 @@ const app = new Vue({
       });
     },
     /**
-     * delete a bookmark
+     * 指定インデックスのブックマークを削除する
      * @param {String} index bookmarklist id(NOT bookmark.id)
      */
     async del(index) {
@@ -98,6 +107,15 @@ const app = new Vue({
         this.bookmarks = this.bookmarks.filter((b, i) => i !== index);
       }
     }
+  },
+  computed: {
+    /**
+     * ブックマーク一覧が読み込まれているか（１件以上あるか）
+     * @return {Boolean}
+     */
+    isReady() {
+      return this.bookmarks.length > 0;
+    },
   },
   created() {
     this.reload();
