@@ -1,3 +1,6 @@
+/**
+ * ブックマーク表示コンポーネント
+ */
 Vue.component('bookmark-component', {
   template: '#bookmark-component',
   props: {
@@ -29,13 +32,24 @@ Vue.component('bookmark-component', {
         'status-none': this.bookmark.ok !== true && this.bookmark.ok !== false,
       }
     },
+    /**
+     * ブックマークのURLを返す
+     * @return {String} url
+     */
+    url() {
+      return this.bookmark.url;
+    }
   },
 })
-
-const app = new Vue({
-  el: '#app',
-  data: {
-    bookmarks: [],
+/**
+ * ブックマーク一覧表示コンポーネント
+ */
+Vue.component('bookmark-app', {
+  template: '#bookmark-app',
+  data() {
+    return {
+      bookmarks: [],
+    };
   },
   methods: {
     /**
@@ -59,7 +73,7 @@ const app = new Vue({
       }
 
       // parent folder name
-      bookmark.folder = folder
+      bookmark.folder = folder;
       // for HTTP status
       bookmark.status = null;
       bookmark.ok = null;
@@ -67,7 +81,7 @@ const app = new Vue({
       return [bookmark];
     },
     /**
-     * ブックマークツリーを取得してならす
+     * ブックマークツリーを取得して一次元配列にならす
      */
     async reload() {
       this.bookmarks = [];
@@ -82,6 +96,9 @@ const app = new Vue({
      */
     check() {
       this.bookmarks.map(async b => {
+        b.status = 0;
+        b.ok = false;
+
         let res;
         try {
           res = await fetch(b.url);
@@ -98,7 +115,8 @@ const app = new Vue({
     },
     /**
      * 指定インデックスのブックマークを削除する
-     * @param {String} index bookmarklist id(NOT bookmark.id)
+     * ステータスが初期化されてしまうためツリー再取得は行わない
+     * @param {String} index bookmarklist index(NOT bookmark.id)
      */
     async del(index) {
       if (window.confirm('are you sure?')) {
@@ -120,4 +138,8 @@ const app = new Vue({
   created() {
     this.reload();
   }
+});
+
+const app = new Vue({
+  el: '#app'
 })

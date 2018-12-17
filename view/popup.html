@@ -8,27 +8,34 @@
 
 <body>
   <div id="app">
-    <button @click="reload">Reload</button>
-    <button @click="check">Check</button>
-    <hr>
-    <ul v-if="isReady">
-      <bookmark-component v-for="(index, b) in bookmarks" :key="index" :bookmark="b">
-        <button @click="del(index)">x</button>
-      </bookmark-component>
-    </ul>
-    <div v-else>
-      Loading...
-    </div>
+    <bookmark-app />
   </div>
+
+  <script type="text/x-template" id="bookmark-app">
+    <div>
+      <button @click="reload">Reload</button>
+      <button @click="check">Check</button>
+      <hr>
+      <ul v-if="isReady">
+        <bookmark-component v-for="(index, b) in bookmarks" :key="index" :bookmark="b">
+          <button @click="del(index)">x</button>
+        </bookmark-component>
+      </ul>
+      <div v-else>
+        Loading...
+      </div>
+    </div>
+  </script>
+
 
   <script type="text/x-template" id="bookmark-component">
     <li>
-    <span class="item item-action"><slot></slot></span>
-    <span class="item item-status" :class="statusClass">{{ statusText }}</span>
-    <span class="item item-path">{{ fullPath }}</span>
-    <span class="item item-link"><a :href="bookmark.url" target="_blank">{{ bookmark.url }}</a></span>
-  </li>
-</script>
+      <span class="item item-action"><slot></slot></span>
+      <span class="item item-status" :class="statusClass">{{ statusText }}</span>
+      <span class="item item-path">{{ fullPath }}</span>
+      <span class="item item-link"><a :href="url" target="_blank">{{ url }}</a></span>
+    </li>
+  </script>
 
   <script src="../js/vue.js"></script>
   <script src="../js/chrome-extension-async.js"></script>

@@ -1,12 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "リンク切れブックマーク削除",
+  "name": "Bookmark cleander",
   "version": "0.0.1",
   "description": "リンク切れブックマークを探し出し削除できます",
   "browser_action": {
     "default_title": "一覧",
     "default_popup": "view/popup.html"
   },
+  "icons": {},
   "background": {},
   "permissions": [
     "bookmarks",
